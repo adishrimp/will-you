@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>💖</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #ffe6f0;
+      font-family: "Comic Sans MS", cursive;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+      z-index: 5;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 14px 26px;
+      font-size: 18px;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      margin: 0 15px;
+    }
+
+    #yes {
+      background-color: #ff69b4;
+      color: white;
+    }
+
+    #no {
+      background-color: #ddd;
+      position: relative;
+    }
+
+    #celebration {
+      display: none;
+    }
+
+    #yay {
+      font-size: 78px;
+      font-weight: bold;
+      color: #e75480; /* warm pink */
+    }
+
+    #kiss {
+      font-size: 42px;
+    }
+
+    /* Floating photos + hearts */
+    .float {
+      position: fixed;
+      bottom: -150px;
+      animation: rise linear infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes rise {
+      to {
+        transform: translateY(-120vh) rotate(10deg);
+      }
+    }
+
+    /* Party poppers (partially visible) */
+    .popper {
+      position: fixed;
+      bottom: -30px;
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(135deg, #ff7eb3, #ff65a3);
+      border-radius: 50%;
+      z-index: 2;
+    }
+
+    .popper.left {
+      left: -25px;
+    }
+
+    .popper.right {
+      right: -25px;
+    }
+
+    /* Real confetti */
+    .confetti {
+      position: fixed;
+      width: 8px;
+      height: 14px;
+      opacity: 0.9;
+      animation: confettiShoot linear forwards;
+      z-index: 1;
+    }
+
+    @keyframes confettiShoot {
+      to {
+        transform: translate(var(--x), -120vh) rotate(720deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1 id="question">Will you go out with me? 💕</h1>
+
+    <div class="buttons" id="buttons">
+      <button id="yes">YES 💖</button>
+      <button id="no">NO 🙄</button>
+    </div>
+
+    <div id="celebration">
+      <div id="yay">YAYYYYYYYY</div>
+      <div id="kiss">😙</div>
+    </div>
+  </div>
+
+  <!-- Party poppers -->
+  <div class="popper left"></div>
+  <div class="popper right"></div>
+
+  <script>
+    const yesBtn = document.getElementById("yes");
+    const noBtn = document.getElementById("no");
+    const question = document.getElementById("question");
+    const buttons = document.getElementById("buttons");
+    const celebration = document.getElementById("celebration");
+
+    /* NO button avoidance */
+    document.addEventListener("mousemove", (e) => {
+      if (!noBtn) return;
+
+      const rect = noBtn.getBoundingClientRect();
+      const danger = 90;
+
+      const dx = e.clientX - (rect.left + rect.width / 2);
+      const dy = e.clientY - (rect.top + rect.height / 2);
+
+      if (Math.abs(dx) < danger && Math.abs(dy) < danger) {
+        noBtn.style.position = "fixed";
+        noBtn.style.left =
+          Math.random() * (window.innerWidth - rect.width) + "px";
+        noBtn.style.top =
+          Math.random() * (window.innerHeight - rect.height) + "px";
+      }
+    });
+
+    const assets = [
+      "❤️",
+      "WhatsApp Image 2026-02-06 at 6.12.53 PM (1).jpeg",
+      "WhatsApp Image 2026-02-06 at 6.12.53 PM (10).jpeg",
+      "WhatsApp Image 2026-02-06 at 6.12.53 PM (11).jpeg",
+      "WhatsApp Image 2026-02-06 at 6.12.53 PM (2).jpeg",
+      "WhatsApp Image 2026-02-06 at 6.12.53 PM (3).jpeg",
+      "WhatsApp Image 2026-02-06 at 6.12.53 PM (4).jpeg",
+      "WhatsApp Image 2026-02-06 at 6.12.53 PM (5).jpeg",
+      "WhatsApp Image 2026-02-06 at 6.12.53 PM (6).jpeg",
+      "WhatsApp Image 2026-02-06 at 6.12.53 PM (7).jpeg",
+      "WhatsApp Image 2026-02-06 at 6.12.53 PM (8).jpeg"
+    ];
+
+    yesBtn.addEventListener("click", () => {
+      question.remove();
+      buttons.remove();
+      celebration.style.display = "block";
+      startFlow();
+      startConfetti();
+    });
+
+    function startFlow() {
+      setInterval(() => {
+        const el = document.createElement("div");
+        el.className = "float";
+        el.style.left = Math.random() * 100 + "vw";
+        el.style.animationDuration = 6 + Math.random() * 6 + "s";
+
+        const item = assets[Math.floor(Math.random() * assets.length)];
+        if (item === "❤️") {
+          el.textContent = "❤️";
+          el.style.fontSize = "32px";
+        } else {
+          el.innerHTML = `<img src="${item}" width="90">`;
+        }
+
+        document.body.appendChild(el);
+      }, 300);
+    }
+
+    function startConfetti() {
+      setInterval(() => {
+        shootConfetti(50);
+        shootConfetti(window.innerWidth - 50);
+      }, 220);
+    }
+
+    function shootConfetti(x) {
+      for (let i = 0; i < 6; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+
+        const colors = ["#ff4d6d", "#ff85a1", "#ffd1dc", "#ffffff"];
+        c.style.backgroundColor =
+          colors[Math.floor(Math.random() * colors.length)];
+
+        c.style.left = x + "px";
+        c.style.bottom = "40px";
+        c.style.width = 6 + Math.random() * 6 + "px";
+        c.style.height = 10 + Math.random() * 10 + "px";
+
+        c.style.setProperty(
+          "--x",
+          (Math.random() * 300 - 150) + "px"
+        );
+
+        c.style.animationDuration = 3 + Math.random() * 2 + "s";
+
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 6000);
+      }
+    }
+  </script>
+
+</body>
+</html>
