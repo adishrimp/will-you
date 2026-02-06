@@ -1,136 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Will you go out with me</title>
+  <meta charset="UTF-8" />
+  <title>will you?</title>
+
   <style>
     body {
       margin: 0;
       height: 100vh;
-      background: #ffe6ee;
+      background: #ffe6f0;
+      font-family: "Comic Sans MS", cursive;
       overflow: hidden;
-      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .container {
-      position: absolute;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);
       text-align: center;
+      position: relative;
       z-index: 5;
     }
 
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-    }
-
     .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      position: relative;
+      margin-top: 20px;
     }
 
     button {
-      font-size: 1.2rem;
-      padding: 10px 25px;
+      padding: 14px 26px;
+      font-size: 18px;
+      border: none;
+      border-radius: 14px;
       cursor: pointer;
+      margin: 0 15px;
+    }
+
+    #yes {
+      background-color: #ff69b4;
+      color: white;
+    }
+
+    #no {
+      background-color: #ddd;
       position: relative;
     }
 
-    #noBtn {
-      position: relative;
-    }
-
-    /* Celebration */
-    .celebration {
+    #celebration {
       display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 3;
-      pointer-events: none;
     }
 
-    .yay {
-      position: absolute;
-      top: 20%;
-      width: 100%;
-      text-align: center;
-      font-size: 6rem;
+    #yay {
+      font-size: 78px;
       font-weight: bold;
       color: #e75480;
     }
 
-    .kiss {
-      position: absolute;
-      top: 32%;
-      width: 100%;
-      text-align: center;
-      font-size: 4rem;
+    #kiss {
+      font-size: 42px;
     }
 
-    /* Floating stream */
+    /* Floating photos + hearts */
     .float {
-      position: absolute;
+      position: fixed;
       bottom: -150px;
-      animation: floatUp linear infinite;
+      animation: rise linear infinite;
+      pointer-events: none;
+      z-index: 1;
     }
 
-    .float img {
-      width: 120px;   /* 🔼 BIGGER IMAGES */
-      height: auto;
-    }
-
-    .heart {
-      font-size: 2rem;
-      color: red;
-    }
-
-    @keyframes floatUp {
-      from {
-        transform: translateY(0);
-        opacity: 1;
-      }
+    @keyframes rise {
       to {
-        transform: translateY(-120vh);
-        opacity: 0;
+        transform: translateY(-120vh) rotate(10deg);
       }
+    }
+
+    /* Party poppers */
+    .popper {
+      position: fixed;
+      bottom: -30px;
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(135deg, #ff7eb3, #ff65a3);
+      border-radius: 50%;
+      z-index: 2;
+    }
+
+    .popper.left {
+      left: -25px;
+    }
+
+    .popper.right {
+      right: -25px;
     }
 
     /* Confetti */
     .confetti {
-      position: absolute;
-      width: 6px;
-      height: 12px;
+      position: fixed;
+      width: 8px;
+      height: 14px;
       opacity: 0.9;
+      animation: confettiShoot linear forwards;
+      z-index: 1;
+    }
+
+    @keyframes confettiShoot {
+      to {
+        transform: translate(var(--x), -120vh) rotate(720deg);
+      }
     }
   </style>
 </head>
+
 <body>
 
-  <div class="container" id="questionBox">
-    <h1>will you go out with me</h1>
-    <div class="buttons">
-      <button id="yesBtn">yes</button>
-      <button id="noBtn">no</button>
+  <div class="container">
+    <h1 id="question">Will you go out with me? 💕</h1>
+
+    <div class="buttons" id="buttons">
+      <button id="yes">YES 💖</button>
+      <button id="no">NO 🙄</button>
+    </div>
+
+    <div id="celebration">
+      <div id="yay">YAYYYYYYYY</div>
+      <div id="kiss">😙</div>
     </div>
   </div>
 
-  <div class="celebration" id="celebration">
-    <div class="yay">YAYYYYYYYY</div>
-    <div class="kiss">😚</div>
-  </div>
+  <div class="popper left"></div>
+  <div class="popper right"></div>
 
-<script>
-  const noBtn = document.getElementById("noBtn");
-  const yesBtn = document.getElementById("yesBtn");
-  const questionBox = document.getElementById("questionBox");
-  const celebration = document.getElementById("celebration");
+  <script>
+    const yesBtn = document.getElementById("yes");
+    const noBtn = document.getElementById("no");
+    const question = document.getElementById("question");
+    const buttons = document.getElementById("buttons");
+    const celebration = document.getElementById("celebration");
 
-  const images = [
-    "WhatsApp Image 2026-02-06 at 6.12.53 PM (1).jpeg",
+    document.addEventListener("mousemove", (e) => {
+      if (!noBtn) return;
+
+      const rect = noBtn.getBoundingClientRect();
+      const danger = 90;
+
+      const dx = e.clientX - (rect.left + rect.width / 2);
+      const dy = e.clientY - (rect.top + rect.height / 2);
+
+      if (Math.abs(dx) < danger && Math.abs(dy) < danger) {
+        noBtn.style.position = "fixed";
+        noBtn.style.left =
+          Math.random() * (window.innerWidth - rect.width) + "px";
+        noBtn.style.top =
+          Math.random() * (window.innerHeight - rect.height) + "px";
+      }
+    });
+
+    const assets = [
+      "❤️",
+      "WhatsApp Image 2026-02-06 at 6.12.53 PM (1).jpeg",
       "WhatsApp Image 2026-02-06 at 6.12.53 PM (10).jpeg",
       "WhatsApp Image 2026-02-06 at 6.12.53 PM (11).jpeg",
       "WhatsApp Image 2026-02-06 at 6.12.53 PM (2).jpeg",
@@ -139,57 +166,74 @@
       "WhatsApp Image 2026-02-06 at 6.12.53 PM (5).jpeg",
       "WhatsApp Image 2026-02-06 at 6.12.53 PM (6).jpeg",
       "WhatsApp Image 2026-02-06 at 6.12.53 PM (7).jpeg",
-      "WhatsApp Image 2026-02-06 at 6.12.53 PM (8).jpeg",
-      "WhatsApp Image 2026-02-06 at 6.12.53 PM (9).jpeg",
-      "WhatsApp Image 2026-02-06 at 6.12.53 PM.jpeg",
-      "WhatsApp Image 2026-02-06 at 6.12.54 PM (2).jpeg",
-      "WhatsApp Image 2026-02-06 at 6.12.54 PM.jpeg"
-  ];
+      "WhatsApp Image 2026-02-06 at 6.12.53 PM (8).jpeg"
+    ];
 
-  noBtn.addEventListener("mousemove", () => {
-    const x = Math.random() * 200 - 100;
-    const y = Math.random() * 100 - 50;
-    noBtn.style.transform = `translate(${x}px, ${y}px)`;
-  });
+    let lastLeft = -999;
 
-  yesBtn.addEventListener("click", () => {
-    questionBox.remove();
-    celebration.style.display = "block";
-    startFloating();
-    startConfetti();
-  });
+    yesBtn.addEventListener("click", () => {
+      question.remove();
+      buttons.remove();
+      celebration.style.display = "block";
+      startFlow();
+      startConfetti();
+    });
 
-  function startFloating() {
-    setInterval(() => {
-      const el = document.createElement("div");
-      el.className = "float";
+    function startFlow() {
+      setInterval(() => {
+        const el = document.createElement("div");
+        el.className = "float";
 
-      const isHeart = Math.random() < 0.4;
-      if (isHeart) {
-        el.innerHTML = "❤️";
-        el.classList.add("heart");
-      } else {
-        const img = document.createElement("img");
-        img.src = images[Math.floor(Math.random() * images.length)];
-        el.appendChild(img);
+        let left;
+        do {
+          left = Math.random() * 100;
+        } while (Math.abs(left - lastLeft) < 12); // spacing fix
+        lastLeft = left;
+
+        el.style.left = left + "vw";
+        el.style.animationDuration = 6 + Math.random() * 6 + "s";
+
+        const item = assets[Math.floor(Math.random() * assets.length)];
+        if (item === "❤️") {
+          el.textContent = "❤️";
+          el.style.fontSize = "36px";
+        } else {
+          el.innerHTML = `<img src="${item}" width="120">`;
+        }
+
+        document.body.appendChild(el);
+      }, 550); // slower spawn to avoid overlap
+    }
+
+    function startConfetti() {
+      setInterval(() => {
+        shootConfetti(50);
+        shootConfetti(window.innerWidth - 50);
+      }, 220);
+    }
+
+    function shootConfetti(x) {
+      for (let i = 0; i < 6; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+
+        const colors = ["#ff4d6d", "#ff85a1", "#ffd1dc", "#ffffff"];
+        c.style.backgroundColor =
+          colors[Math.floor(Math.random() * colors.length)];
+
+        c.style.left = x + "px";
+        c.style.bottom = "40px";
+        c.style.width = 6 + Math.random() * 6 + "px";
+        c.style.height = 10 + Math.random() * 10 + "px";
+
+        c.style.setProperty("--x", (Math.random() * 300 - 150) + "px");
+        c.style.animationDuration = 3 + Math.random() * 2 + "s";
+
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 6000);
       }
+    }
+  </script>
 
-      const left = Math.random() * 90 + 5;
-      el.style.left = left + "vw";
-
-      const duration = Math.random() * 5 + 8;
-      el.style.animationDuration = duration + "s";
-
-      celebration.appendChild(el);
-
-      setTimeout(() => el.remove(), duration * 1000);
-    }, 600); // spaced enough to avoid overlap
-  }
-
-  function startConfetti() {
-    setInterval(() => {
-      const startTime = Date.now();
-      const shoot = setInterval(() => {
-        for (let i = 0; i < 6; i++) {
-          createConfetti(30, window.innerHeight - 20, 1);
-          createConfetti(window.innerWidth - 30, window.innerHeight - 20, -1);
+</body>
+</html>
