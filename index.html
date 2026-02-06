@@ -2,110 +2,150 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>💖</title>
+  <title>💗</title>
 
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: #ffe6f0;
-      font-family: "Comic Sans MS", cursive;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
     }
 
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #ffd6e8;
+    }
+
+    /* MAIN QUESTION */
     .container {
-      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
       position: relative;
-      z-index: 5;
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #ff4d88;
     }
 
     .buttons {
-      margin-top: 20px;
+      display: flex;
+      gap: 30px;
     }
 
     button {
-      padding: 14px 26px;
-      font-size: 18px;
+      padding: 14px 28px;
+      font-size: 1.2rem;
       border: none;
-      border-radius: 14px;
+      border-radius: 30px;
       cursor: pointer;
-      margin: 0 15px;
     }
 
     #yes {
-      background-color: #ff69b4;
+      background: #ff4d88;
       color: white;
     }
 
     #no {
-      background-color: #ddd;
+      background: #fff;
+      color: #ff4d88;
       position: relative;
     }
 
-    #celebration {
+    /* CELEBRATION */
+    .celebration {
+      position: absolute;
+      inset: 0;
       display: none;
-    }
-
-    #yay {
-      font-size: 78px;
-      font-weight: bold;
-      color: #e75480; /* warm pink */
-    }
-
-    #kiss {
-      font-size: 42px;
-    }
-
-    /* Floating photos + hearts */
-    .float {
-      position: fixed;
-      bottom: -150px;
-      animation: rise linear infinite;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
       pointer-events: none;
-      z-index: 1;
     }
 
-    @keyframes rise {
+    .yay {
+      font-size: 6rem; /* BIG text */
+      color: #ff3f7f;  /* warm pink */
+      margin-bottom: 10px;
+    }
+
+    .kiss {
+      font-size: 3.5rem;
+    }
+
+    /* FLOATING PHOTOS + HEARTS */
+    .float {
+      position: absolute;
+      bottom: -140px;
+      animation: floatUp linear infinite;
+      pointer-events: none;
+    }
+
+    img.float {
+      width: 140px;
+      max-width: 40vw;
+      border-radius: 18px;
+    }
+
+    .heart {
+      font-size: 26px;
+      color: red;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0);
+        opacity: 1;
+      }
       to {
-        transform: translateY(-120vh) rotate(10deg);
+        transform: translateY(-120vh);
+        opacity: 1;
       }
     }
 
-    /* Party poppers (partially visible) */
+    /* PARTY POPPERS (visual only) */
     .popper {
       position: fixed;
-      bottom: -30px;
-      width: 90px;
-      height: 90px;
-      background: linear-gradient(135deg, #ff7eb3, #ff65a3);
-      border-radius: 50%;
-      z-index: 2;
+      bottom: -20px;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, #ff4d88 40%, transparent 41%);
+      opacity: 0.4;
+      z-index: 1;
     }
 
     .popper.left {
-      left: -25px;
+      left: -30px;
     }
 
     .popper.right {
-      right: -25px;
+      right: -30px;
     }
 
-    /* Real confetti */
+    /* CONFETTI */
     .confetti {
       position: fixed;
       width: 8px;
       height: 14px;
-      opacity: 0.9;
-      animation: confettiShoot linear forwards;
-      z-index: 1;
+      animation: confettiShoot ease-out forwards;
+      z-index: 2;
     }
 
     @keyframes confettiShoot {
-      to {
-        transform: translate(var(--x), -120vh) rotate(720deg);
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+      50% {
+        transform: translate(calc(var(--x) / 2), -40vh) rotate(360deg);
+      }
+      100% {
+        transform: translate(var(--x), 120vh) rotate(720deg);
       }
     }
   </style>
@@ -113,52 +153,54 @@
 
 <body>
 
-  <div class="container">
-    <h1 id="question">Will you go out with me? 💕</h1>
-
-    <div class="buttons" id="buttons">
-      <button id="yes">YES 💖</button>
-      <button id="no">NO 🙄</button>
-    </div>
-
-    <div id="celebration">
-      <div id="yay">YAYYYYYYYY</div>
-      <div id="kiss">😙</div>
+  <!-- QUESTION -->
+  <div class="container" id="main">
+    <h1>will you go out with me</h1>
+    <div class="buttons">
+      <button id="yes">Yes</button>
+      <button id="no">No</button>
     </div>
   </div>
 
-  <!-- Party poppers -->
+  <!-- CELEBRATION -->
+  <div class="celebration" id="celebration">
+    <div class="yay">YAYYYYYYYY</div>
+    <div class="kiss">😗</div>
+  </div>
+
+  <!-- PARTY POPPERS -->
   <div class="popper left"></div>
   <div class="popper right"></div>
 
   <script>
-    const yesBtn = document.getElementById("yes");
     const noBtn = document.getElementById("no");
-    const question = document.getElementById("question");
-    const buttons = document.getElementById("buttons");
+    const yesBtn = document.getElementById("yes");
+    const main = document.getElementById("main");
     const celebration = document.getElementById("celebration");
 
-    /* NO button avoidance */
+    /* NO BUTTON RUNS AWAY */
     document.addEventListener("mousemove", (e) => {
-      if (!noBtn) return;
-
       const rect = noBtn.getBoundingClientRect();
-      const danger = 90;
-
       const dx = e.clientX - (rect.left + rect.width / 2);
       const dy = e.clientY - (rect.top + rect.height / 2);
+      const dist = Math.sqrt(dx * dx + dy * dy);
 
-      if (Math.abs(dx) < danger && Math.abs(dy) < danger) {
-        noBtn.style.position = "fixed";
-        noBtn.style.left =
-          Math.random() * (window.innerWidth - rect.width) + "px";
-        noBtn.style.top =
-          Math.random() * (window.innerHeight - rect.height) + "px";
+      if (dist < 120) {
+        noBtn.style.transform =
+          `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)`;
       }
     });
 
-    const assets = [
-      "❤️",
+    /* YES CLICK */
+    yesBtn.onclick = () => {
+      main.remove();
+      celebration.style.display = "flex";
+      startFloating();
+      startConfetti();
+    };
+
+    /* YOUR IMAGES (names must match repo EXACTLY) */
+    const images = [
       "WhatsApp Image 2026-02-06 at 6.12.53 PM (1).jpeg",
       "WhatsApp Image 2026-02-06 at 6.12.53 PM (10).jpeg",
       "WhatsApp Image 2026-02-06 at 6.12.53 PM (11).jpeg",
@@ -168,44 +210,57 @@
       "WhatsApp Image 2026-02-06 at 6.12.53 PM (5).jpeg",
       "WhatsApp Image 2026-02-06 at 6.12.53 PM (6).jpeg",
       "WhatsApp Image 2026-02-06 at 6.12.53 PM (7).jpeg",
-      "WhatsApp Image 2026-02-06 at 6.12.53 PM (8).jpeg"
+      "WhatsApp Image 2026-02-06 at 6.12.53 PM (8).jpeg",
+      "WhatsApp Image 2026-02-06 at 6.12.53 PM (9).jpeg",
+      "WhatsApp Image 2026-02-06 at 6.12.53 PM.jpeg",
+      "WhatsApp Image 2026-02-06 at 6.12.54 PM (2).jpeg",
+      "WhatsApp Image 2026-02-06 at 6.12.54 PM.jpeg"
     ];
 
-    yesBtn.addEventListener("click", () => {
-      question.remove();
-      buttons.remove();
-      celebration.style.display = "block";
-      startFlow();
-      startConfetti();
-    });
+    /* FLOATING PHOTOS + HEARTS (LANES TO AVOID OVERLAP) */
+    function startFloating() {
+      const lanes = 6;
 
-    function startFlow() {
       setInterval(() => {
-        const el = document.createElement("div");
-        el.className = "float";
-        el.style.left = Math.random() * 100 + "vw";
-        el.style.animationDuration = 6 + Math.random() * 6 + "s";
+        const el =
+          Math.random() > 0.5
+            ? document.createElement("img")
+            : document.createElement("div");
 
-        const item = assets[Math.floor(Math.random() * assets.length)];
-        if (item === "❤️") {
-          el.textContent = "❤️";
-          el.style.fontSize = "32px";
+        el.classList.add("float");
+
+        const lane = Math.floor(Math.random() * lanes);
+        el.style.left = (lane * (100 / lanes)) + 3 + "vw";
+        el.style.animationDuration = 7 + Math.random() * 3 + "s";
+
+        if (el.tagName === "IMG") {
+          el.src = images[Math.floor(Math.random() * images.length)];
         } else {
-          el.innerHTML = `<img src="${item}" width="90">`;
+          el.classList.add("heart");
+          el.innerText = "❤️";
         }
 
         document.body.appendChild(el);
-      }, 300);
+        setTimeout(() => el.remove(), 14000);
+      }, 550);
     }
 
+    /* CONFETTI WITH PROJECTILE MOTION */
     function startConfetti() {
-      setInterval(() => {
-        shootConfetti(50);
-        shootConfetti(window.innerWidth - 50);
-      }, 220);
+      function shower() {
+        const interval = setInterval(() => {
+          shootConfetti(60, true);
+          shootConfetti(window.innerWidth - 60, false);
+        }, 120);
+
+        setTimeout(() => clearInterval(interval), 2000);
+      }
+
+      shower();
+      setInterval(shower, 3000);
     }
 
-    function shootConfetti(x) {
+    function shootConfetti(x, fromLeft) {
       for (let i = 0; i < 6; i++) {
         const c = document.createElement("div");
         c.className = "confetti";
@@ -216,21 +271,19 @@
 
         c.style.left = x + "px";
         c.style.bottom = "40px";
-        c.style.width = 6 + Math.random() * 6 + "px";
-        c.style.height = 10 + Math.random() * 10 + "px";
 
-        c.style.setProperty(
-          "--x",
-          (Math.random() * 300 - 150) + "px"
-        );
+        const center = window.innerWidth / 2;
+        const direction = fromLeft ? 1 : -1;
+        const horizontal =
+          direction * (Math.abs(center - x) * 0.6 + Math.random() * 80);
 
-        c.style.animationDuration = 3 + Math.random() * 2 + "s";
+        c.style.setProperty("--x", horizontal + "px");
+        c.style.animationDuration = "3.5s";
 
         document.body.appendChild(c);
-        setTimeout(() => c.remove(), 6000);
+        setTimeout(() => c.remove(), 5000);
       }
     }
   </script>
-
 </body>
 </html>
