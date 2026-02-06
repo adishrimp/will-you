@@ -52,7 +52,7 @@
     #yay {
       font-size: 78px;
       font-weight: bold;
-      color: #e75480;
+      color: #e75480; /* warm pink */
     }
 
     #kiss {
@@ -74,7 +74,7 @@
       }
     }
 
-    /* Party poppers */
+    /* Party poppers (partially visible) */
     .popper {
       position: fixed;
       bottom: -30px;
@@ -93,7 +93,7 @@
       right: -25px;
     }
 
-    /* Confetti */
+    /* Real confetti */
     .confetti {
       position: fixed;
       width: 8px;
@@ -127,6 +127,7 @@
     </div>
   </div>
 
+  <!-- Party poppers -->
   <div class="popper left"></div>
   <div class="popper right"></div>
 
@@ -137,6 +138,7 @@
     const buttons = document.getElementById("buttons");
     const celebration = document.getElementById("celebration");
 
+    /* NO button avoidance */
     document.addEventListener("mousemove", (e) => {
       if (!noBtn) return;
 
@@ -169,8 +171,6 @@
       "WhatsApp Image 2026-02-06 at 6.12.53 PM (8).jpeg"
     ];
 
-    let lastLeft = -999;
-
     yesBtn.addEventListener("click", () => {
       question.remove();
       buttons.remove();
@@ -183,26 +183,19 @@
       setInterval(() => {
         const el = document.createElement("div");
         el.className = "float";
-
-        let left;
-        do {
-          left = Math.random() * 100;
-        } while (Math.abs(left - lastLeft) < 12); // spacing fix
-        lastLeft = left;
-
-        el.style.left = left + "vw";
+        el.style.left = Math.random() * 100 + "vw";
         el.style.animationDuration = 6 + Math.random() * 6 + "s";
 
         const item = assets[Math.floor(Math.random() * assets.length)];
         if (item === "❤️") {
           el.textContent = "❤️";
-          el.style.fontSize = "36px";
+          el.style.fontSize = "32px";
         } else {
           el.innerHTML = `<img src="${item}" width="120">`;
         }
 
         document.body.appendChild(el);
-      }, 550); // slower spawn to avoid overlap
+      }, 390);
     }
 
     function startConfetti() {
@@ -226,7 +219,11 @@
         c.style.width = 6 + Math.random() * 6 + "px";
         c.style.height = 10 + Math.random() * 10 + "px";
 
-        c.style.setProperty("--x", (Math.random() * 300 - 150) + "px");
+        c.style.setProperty(
+          "--x",
+          (Math.random() * 300 - 150) + "px"
+        );
+
         c.style.animationDuration = 3 + Math.random() * 2 + "s";
 
         document.body.appendChild(c);
